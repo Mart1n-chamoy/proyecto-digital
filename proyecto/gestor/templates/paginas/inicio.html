@@ -3,6 +3,22 @@
 {% block titulo %} Inicio {% endblock %}
 
 {% block contenido %}
-    <h1>Bienvenido a la página de inicio</h1>
-    <p>Esta es la página de inicio de nuestro sitio web.</p>
+
+<div class="row align-items-md-stretch">
+    <div class="col-md-6">
+        <div
+            class="h-100 p-5 text-white bg-primary border rounded-3"
+        >
+            <h2>Bienvenido</h2>
+            <p>
+               Ingresar a la sección de documentos para ver la lista de documentos disponibles.
+            </p>
+            <button
+                class="btn btn-outline-light text-decoration-none"
+                type="button"
+            ><a href="{% url 'documentos' %}" class="text-white text-decoration-none">Ingresar a documentos</a>
+            </button>
+        </div>
+    </div>
+    
 {% endblock %}

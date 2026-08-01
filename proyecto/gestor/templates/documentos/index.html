@@ -1,0 +1,56 @@
+{% extends "paginas/base.html" %}
+
+{% block titulo %} Lista de documentos {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header"><a
+        name=""
+        id=""
+        class="btn btn-success"
+        href="{% url 'crear' %}"
+        role="button"
+        >Agregar Documento</a
+    >
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Documentos</h4>
+        
+        <div
+            class="table-responsive"
+        >
+            <table
+                class="table table-primary"
+            >
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">Parcela</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="">
+                        <td>1</td>
+                        <td>Martin</td>
+                        <td>Colussi</td>
+                        <td>12345678</td>
+                        <td>Parcela 1</td>
+                        <td> <a name="" id="" class="btn btn-info btn-sm" href="{% url 'editar' %}" role="button">Editar</a> | <a href="#" class="btn btn-danger" role="button">Eliminar</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer text-muted">
+
+        </div>
+
+    </div>
+    
+
+
+{% endblock %}

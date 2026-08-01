@@ -1,0 +1,18 @@
+{% extends "paginas/base.html" %}
+
+{% block titulo %} Editar Documento {% endblock %}
+
+{% block contenido %}
+    
+<div class="card">
+    <div class="card-header">Editar documento</div>
+    <div class="card-body">
+        <h4 class="card-title">Datos del documento</h4>
+        
+        {% include "documentos/form.html" %}
+
+    </div>
+    <div class="card-footer text-body-secondary"></div>
+</div>
+
+{% endblock %}
