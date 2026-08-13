@@ -30,18 +30,26 @@
                         <th scope="col">Apellido</th>
                         <th scope="col">DNI</th>
                         <th scope="col">Parcela</th>
+                        <th scope="col">Archivo</th>
                         <th scope="col">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
+                    {% for documento in documentos %}
                     <tr class="">
-                        <td>1</td>
-                        <td>Martin</td>
-                        <td>Colussi</td>
-                        <td>12345678</td>
-                        <td>Parcela 1</td>
-                        <td> <a name="" id="" class="btn btn-info btn-sm" href="{% url 'editar' %}" role="button">Editar</a> | <a href="#" class="btn btn-danger" role="button">Eliminar</a></td>
+                        <td>{{ documento.id }}</td>
+                        <td>{{ documento.nombre }}</td>
+                        <td>{{ documento.apellido }}</td>
+                        <td>{{ documento.dni }}</td>
+                        <td>{{ documento.parcela }}</td>
+                        <td>
+                            <a href="{{ documento.archivo.url }}" class="btn btn-primary" role="button">Ver Archivo</a>
+                        </td>
+                        <td> <a name="" id="" class="btn btn-info btn-sm" href="{% url 'editar' documento.id %}" role="button">Editar</a>
+                             | 
+                             <a href="{% url 'eliminar' documento.id %}" class="btn btn-danger" role="button">Eliminar</a></td>
                     </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
