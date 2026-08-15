@@ -16,7 +16,23 @@
     </div>
     <div class="card-body">
         <h4 class="card-title">Documentos</h4>
-        
+
+        <form method="get" action="{% url 'documentos' %}" class="mb-3">
+            <div class="input-group">
+                <input
+                    type="text"
+                    name="q"
+                    value="{{ query }}"
+                    class="form-control"
+                    placeholder="Buscar por nombre, apellido, DNI o parcela..."
+                >
+                <button class="btn btn-outline-primary" type="submit">Buscar</button>
+                {% if query %}
+                <a href="{% url 'documentos' %}" class="btn btn-outline-secondary">Limpiar</a>
+                {% endif %}
+            </div>
+        </form>
+
         <div
             class="table-responsive"
         >

@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.db.models import Q
 from .models import Documento
 from .forms import DocumentoForm
 # Create your views here.
@@ -7,8 +8,16 @@ from .forms import DocumentoForm
 def inicio(request):
     return render(request, 'paginas/inicio.html')
 def documentos(request):
+    query = request.GET.get('q', '')
     documentos = Documento.objects.all()
-    return render(request, 'documentos/index.html', {'documentos': documentos})
+    if query:
+        documentos = documentos.filter(
+            Q(nombre__icontains=query) |
+            Q(apellido__icontains=query) |
+            Q(dni__icontains=query) |
+            Q(parcela__icontains=query)
+        )
+    return render(request, 'documentos/index.html', {'documentos': documentos, 'query': query})
 def crear_documento(request):
     formulario = DocumentoForm(request.POST or None, request.FILES or None)
     if formulario.is_valid():
