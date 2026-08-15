@@ -7,11 +7,12 @@ class Documento(models.Model):
    nombre = models.CharField(max_length=100, verbose_name='Nombre')
    apellido = models.CharField(max_length=100, verbose_name='Apellido')
    dni = models.CharField(max_length=20, verbose_name='DNI')
+   telefono = models.CharField(max_length=20, verbose_name='Teléfono', blank=True, default='')
    parcela = models.CharField(max_length=100, verbose_name='Parcela')
    archivo = models.FileField(upload_to='documentos/', verbose_name='Archivo')
 
    def __str__(self):
-      fila = "Nombre: " + self.nombre +" - "+"Apellido: " + self.apellido +" - "+ "DNI: " + self.dni +" - "+ " Parcela: " + self.parcela
+      fila = "Nombre: " + self.nombre +" - "+"Apellido: " + self.apellido +" - "+ "DNI: " + self.dni +" - "+ "Teléfono: " + self.telefono +" - "+ "Parcela: " + self.parcela
       return fila
 
    def delete(self, using=None, keep_parents=False):

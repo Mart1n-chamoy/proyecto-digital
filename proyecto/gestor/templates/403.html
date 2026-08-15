@@ -1,0 +1,11 @@
+{% extends "paginas/base.html" %}
+
+{% block titulo %} Acceso denegado {% endblock %}
+
+{% block contenido %}
+<div class="alert alert-danger mt-4">
+    <h4 class="alert-heading">Acceso denegado</h4>
+    <p>No tenés permiso para realizar esta acción. Si creés que es un error, contactá al administrador del sistema.</p>
+    <a href="{% url 'documentos' %}" class="btn btn-outline-danger">Volver a Documentos</a>
+</div>
+{% endblock %}

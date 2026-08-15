@@ -5,7 +5,9 @@
 {% block contenido %}
 
 <div class="card">
-    <div class="card-header"><a
+    <div class="card-header">
+    {% if perms.gestor.add_documento %}
+    <a
         name=""
         id=""
         class="btn btn-success"
@@ -13,6 +15,7 @@
         role="button"
         >Agregar Documento</a
     >
+    {% endif %}
     </div>
     <div class="card-body">
         <h4 class="card-title">Documentos</h4>
@@ -45,6 +48,7 @@
                         <th scope="col">Nombre</th>
                         <th scope="col">Apellido</th>
                         <th scope="col">DNI</th>
+                        <th scope="col">Teléfono</th>
                         <th scope="col">Parcela</th>
                         <th scope="col">Archivo</th>
                         <th scope="col">Acciones</th>
@@ -57,13 +61,22 @@
                         <td>{{ documento.nombre }}</td>
                         <td>{{ documento.apellido }}</td>
                         <td>{{ documento.dni }}</td>
+                        <td>{{ documento.telefono }}</td>
                         <td>{{ documento.parcela }}</td>
                         <td>
                             <a href="{{ documento.archivo.url }}" class="btn btn-primary" role="button">Ver Archivo</a>
                         </td>
-                        <td> <a name="" id="" class="btn btn-info btn-sm" href="{% url 'editar' documento.id %}" role="button">Editar</a>
-                             | 
-                             <a href="{% url 'eliminar' documento.id %}" class="btn btn-danger" role="button">Eliminar</a></td>
+                        <td>
+                            {% if perms.gestor.change_documento %}
+                            <a name="" id="" class="btn btn-info btn-sm" href="{% url 'editar' documento.id %}" role="button">Editar</a>
+                            {% endif %}
+                            {% if perms.gestor.change_documento and perms.gestor.delete_documento %}
+                             |
+                            {% endif %}
+                            {% if perms.gestor.delete_documento %}
+                             <a href="{% url 'eliminar' documento.id %}" class="btn btn-danger" role="button">Eliminar</a>
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
