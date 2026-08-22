@@ -1,0 +1,26 @@
+{% extends "paginas/base.html" %}
+
+{% block titulo %} Eliminar Documento {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header bg-danger text-white">Confirmar eliminación</div>
+    <div class="card-body">
+        <p>¿Estás seguro de que querés eliminar este documento? Esta acción no se puede deshacer.</p>
+        <ul>
+            <li><strong>Nombre:</strong> {{ documento.nombre }} {{ documento.apellido }}</li>
+            <li><strong>DNI:</strong> {{ documento.dni }}</li>
+            <li><strong>N° Contrato:</strong> {{ documento.numero_contrato }}</li>
+            <li><strong>Parcela:</strong> {{ documento.parcela }}</li>
+            <li><strong>Archivo:</strong> <a href="{{ documento.archivo.url }}" target="_blank">Ver archivo</a></li>
+        </ul>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Sí, eliminar</button>
+            <a href="{% url 'documentos' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

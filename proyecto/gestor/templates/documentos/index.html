@@ -27,7 +27,7 @@
                     name="q"
                     value="{{ query }}"
                     class="form-control"
-                    placeholder="Buscar por nombre, apellido, DNI o parcela..."
+                    placeholder="Buscar por nombre, apellido, DNI, N° de contrato o parcela..."
                 >
                 <button class="btn btn-outline-primary" type="submit">Buscar</button>
                 {% if query %}
@@ -49,6 +49,7 @@
                         <th scope="col">Apellido</th>
                         <th scope="col">DNI</th>
                         <th scope="col">Teléfono</th>
+                        <th scope="col">N° Contrato</th>
                         <th scope="col">Parcela</th>
                         <th scope="col">Archivo</th>
                         <th scope="col">Acciones</th>
@@ -62,6 +63,7 @@
                         <td>{{ documento.apellido }}</td>
                         <td>{{ documento.dni }}</td>
                         <td>{{ documento.telefono }}</td>
+                        <td>{{ documento.numero_contrato }}</td>
                         <td>{{ documento.parcela }}</td>
                         <td>
                             <a href="{{ documento.archivo.url }}" class="btn btn-primary" role="button">Ver Archivo</a>
@@ -78,16 +80,49 @@
                             {% endif %}
                         </td>
                     </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-4">
+                            No se encontraron documentos{% if query %} para "{{ query }}"{% endif %}.
+                        </td>
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+
+        {% if documentos.has_other_pages %}
+        <nav aria-label="Paginación de documentos">
+            <ul class="pagination justify-content-center mt-3 mb-0">
+                {% if documentos.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ documentos.previous_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}">Anterior</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">Página {{ documentos.number }} de {{ documentos.paginator.num_pages }}</span>
+                </li>
+
+                {% if documentos.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ documentos.next_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}">Siguiente</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+
         <div class="card-footer text-muted">
 
         </div>
 
     </div>
-    
+
 
 
 {% endblock %}

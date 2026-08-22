@@ -30,6 +30,9 @@
     >
     {% if user.is_authenticated %}
     <a class="nav-link" href="{% url 'documentos' %}">Documentos</a>
+    {% if perms.gestor.view_registroauditoria %}
+    <a class="nav-link" href="{% url 'auditoria' %}">Auditoría</a>
+    {% endif %}
     <span class="nav-link text-muted">{{ user.username }}</span>
     <form method="post" action="{% url 'logout' %}" class="d-inline">
         {% csrf_token %}

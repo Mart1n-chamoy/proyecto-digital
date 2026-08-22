@@ -19,13 +19,17 @@
             aria-describedby="helpId"
             placeholder="{{campo.label}}"
             value="{{ campo.value | default:'' }}"
-
+            {% if campo.field.widget.input_type == 'file' %}accept=".pdf"{% endif %}
 
 
         />
-        
+        {% if campo.field.widget.input_type == 'file' %}
+        <div class="form-text">Solo archivos PDF, máximo 15 MB.</div>
+        {% endif %}
     </div>
-    <div class="col-12-help-text">{{ campo.errors }}</div>
+    {% if campo.errors %}
+    <div class="alert alert-danger py-2">{{ campo.errors }}</div>
+    {% endif %}
     {% endfor %}
 
     <input

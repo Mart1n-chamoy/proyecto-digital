@@ -1,0 +1,77 @@
+{% extends "paginas/base.html" %}
+
+{% block titulo %} Auditoría {% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <div class="card-header">Historial de auditoría</div>
+    <div class="card-body">
+        <h4 class="card-title">Acciones sobre documentos</h4>
+
+        <div class="table-responsive">
+            <table class="table table-primary">
+                <thead>
+                    <tr>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Acción</th>
+                        <th scope="col">ID Documento</th>
+                        <th scope="col">Documento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro in registros %}
+                    <tr>
+                        <td>{{ registro.fecha|date:"d/m/Y H:i" }}</td>
+                        <td>{{ registro.usuario.username|default:"(usuario eliminado)" }}</td>
+                        <td>
+                            {% if registro.accion == 'crear' %}
+                            <span class="badge text-bg-success">Creación</span>
+                            {% elif registro.accion == 'editar' %}
+                            <span class="badge text-bg-info">Edición</span>
+                            {% else %}
+                            <span class="badge text-bg-danger">Eliminación</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ registro.documento_id }}</td>
+                        <td>{{ registro.documento_descripcion }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">Todavía no hay registros de auditoría.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if registros.has_other_pages %}
+        <nav aria-label="Paginación de auditoría">
+            <ul class="pagination justify-content-center mt-3 mb-0">
+                {% if registros.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ registros.previous_page_number }}">Anterior</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">Página {{ registros.number }} de {{ registros.paginator.num_pages }}</span>
+                </li>
+
+                {% if registros.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ registros.next_page_number }}">Siguiente</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Siguiente</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

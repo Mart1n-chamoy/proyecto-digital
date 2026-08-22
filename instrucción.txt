@@ -1,0 +1,2 @@
+iniciar XAMPP (MySQL y apache)
+levantar con python manage.py runserver

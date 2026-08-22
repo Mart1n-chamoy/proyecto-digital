@@ -4,5 +4,4 @@ from .models import Documento
 class DocumentoForm(forms.ModelForm):
     class Meta:
         model = Documento
-        fields = '__all__'
-        
+        exclude = ['creado_por', 'creado_en', 'modificado_por', 'modificado_en']
