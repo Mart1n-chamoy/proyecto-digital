@@ -4,42 +4,117 @@ Sistema web para almacenar y administrar contratos en PDF (documentos de emplead
 
 ## Requisitos
 
-- Python 3.11+
-- MySQL o MariaDB corriendo localmente
+- Python 3.10+
+- MariaDB 10.5+ o MySQL 8.0.11+ corriendo localmente (versiones más viejas no son compatibles con Django 5.2)
 
-## Instalación
+## Instalación en una VM/máquina Ubuntu desde cero
 
-1. Instalar las dependencias:
+1. Clonar el repositorio y entrar a la carpeta:
 
+   ```bash
+   git clone <url-del-repo>
+   cd proyecto-digital
    ```
+
+2. Instalar y configurar MariaDB nativa (con `apt`, **no** con XAMPP/LAMPP — esas versiones embebidas suelen ser viejas y no cumplen el mínimo que pide Django):
+
+   ```bash
+   sudo apt update
+   sudo apt install mariadb-server -y
+   sudo systemctl enable --now mariadb
+   ```
+
+   Crear la base de datos y un usuario dedicado para la app (evitar usar `root`, que en Ubuntu no tiene contraseña y se autentica distinto):
+
+   ```bash
+   sudo mysql
+   ```
+
+   Dentro del prompt de `mysql`:
+
+   ```sql
+   CREATE DATABASE gestor_documentos CHARACTER SET utf8mb4;
+   CREATE USER 'gestor_app'@'localhost' IDENTIFIED BY 'ELEGÍ-UNA-CONTRASEÑA-ACÁ';
+   GRANT ALL PRIVILEGES ON gestor_documentos.* TO 'gestor_app'@'localhost';
+   FLUSH PRIVILEGES;
+   EXIT;
+   ```
+
+3. Crear y activar un entorno virtual. Los sistemas Linux modernos (Ubuntu 23.04+, Debian 12+) no dejan instalar paquetes con `pip` directamente sobre el Python del sistema («externally-managed-environment»), así que este paso es obligatorio:
+
+   ```bash
+   sudo apt install python3-venv python3-full -y   # una sola vez, Ubuntu/Debian
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+   En Windows sería `python -m venv venv` y luego `venv\Scripts\activate`.
+
+   Con el entorno activado, la línea de comandos empieza con `(venv)`. Hay que activarlo de nuevo (`source venv/bin/activate`) cada vez que se abre una terminal nueva para trabajar en el proyecto.
+
+4. Instalar las dependencias:
+
+   ```bash
    pip install -r requirements.txt
    ```
 
-2. Copiar `.env.example` a `.env` y completar los valores (clave secreta, credenciales de la base de datos, etc.):
+5. Entrar a la carpeta del proyecto Django (donde está `manage.py`):
 
+   ```bash
+   cd proyecto
    ```
+
+6. Copiar `.env.example` a `.env` y completar los valores: clave secreta, y las credenciales creadas en el paso 2 (`DB_NAME=gestor_documentos`, `DB_USER=gestor_app`, `DB_PASSWORD=` la contraseña elegida, `DB_HOST=localhost`, `DB_PORT=3306`):
+
+   ```bash
    cp .env.example .env
    ```
 
-3. Crear la base de datos en MySQL (el nombre debe coincidir con `DB_NAME` en el `.env`):
+7. Aplicar las migraciones:
 
-   ```sql
-   CREATE DATABASE gestor_documentos;
-   ```
-
-4. Aplicar las migraciones:
-
-   ```
+   ```bash
    python manage.py migrate
    ```
 
-5. Levantar el servidor de desarrollo:
+8. Levantar el servidor de desarrollo:
 
-   ```
+   ```bash
    python manage.py runserver
    ```
 
    La aplicación queda disponible en `http://127.0.0.1:8000/`.
+
+### (Opcional) phpMyAdmin, para administrar la base de datos con una interfaz visual
+
+```bash
+sudo apt install phpmyadmin
+```
+
+Durante la instalación:
+- **"Web server to configure automatically"** → marcar `apache2` con la barra espaciadora y confirmar (instala Apache si hace falta).
+- **"Configure database for phpmyadmin with dbconfig-common?"** → `Yes`.
+
+Después, con Apache corriendo (`sudo systemctl status apache2`), entrar desde el navegador de la VM a `http://localhost/phpmyadmin` e iniciar sesión con el usuario `gestor_app` (no con `root`, que no tiene contraseña configurada en Ubuntu).
+
+### Arrancar todo de nuevo después de reiniciar la VM
+
+`mariadb` y `apache2` quedan habilitados como servicios del sistema, así que arrancan solos. Lo único que hay que levantar a mano es Django:
+
+```bash
+cd ~/ruta/al/proyecto-digital
+source venv/bin/activate
+cd proyecto
+python manage.py runserver
+```
+
+Si por algún motivo la base de datos o phpMyAdmin no responden, verificar y (re)iniciar los servicios:
+
+```bash
+sudo systemctl status mariadb
+sudo systemctl status apache2
+sudo systemctl start mariadb    # si estuviera inactivo
+sudo systemctl start apache2    # si estuviera inactivo
+```
 
 ## Usuarios
 
